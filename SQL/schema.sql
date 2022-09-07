@@ -3,27 +3,31 @@ create database employees_db;
 use employees_db;
 
 create table departments(
-    departmentID int not null,
-    department varchar(50) not null,
+    departmentID int not null auto_increment,
+    department varchar(30) not null,
     primary key (departmentID)
 );
 
 create table roles(
-    roleID int not null,
-    jobTitle varchar(50) not null,
-ADDTHEREFERENCETO THE departmentID TOKNOWWHEREITSCOMINGFROM
-    departmentID int not null, 
-    salary int not null
-    primary key (roleID)
+    roleID int not null auto_increment primary key,
+    jobTitle varchar(30) not null,
+    salary decimal not null,
+    departmentID int, 
+    foreign key (departmentID)
+    references departments(departmentID)
+    on delete set null
 );
 
 
 create table employeeProfile(
-    id int not null,
-    firstName varchar(50) not null,
-    lastName varchar(50) not null,
-    jobTitle varchar(50) not null,
-    manager varchar(50) ,
-    roleID int not null,
-    primary key (id)
+    id int not null auto_increment primary key,
+    firstName varchar(30) not null,
+    lastName varchar(30) not null,
+    jobTitle varchar(30) not null,
+    managerID int,
+    roleID int,
+    foreign key (roleID)
+    references roles(roleID)
+    on delete set null
+
 );
