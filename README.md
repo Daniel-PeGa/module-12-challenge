@@ -5,9 +5,6 @@ I WANT to be able to view and manage the departments, roles, and employees in my
 SO THAT I can organize and plan my business
 
 
-WHEN I choose to add a department
-THEN I am prompted to enter the name of the department and that department is added to the database
-
 WHEN I choose to add a role
 THEN I am prompted to enter the name, salary, and department for the role and that role is added to the database
 

@@ -37,8 +37,11 @@ inquirer
     if (answers.initialPrompt == 'View all departments') {
       seeDepartments();
     }
-    if(answers.initialPrompt == 'Update Employee') {
-      updateEmployee();
+    if(answers.initialPrompt == 'Add Department') {
+      addDepartment();
+    }
+    if(answers.initialPrompt == 'Add Role') {
+      addRole();
     }
   })
 
@@ -75,23 +78,51 @@ function seeEmployeeProfile() {
   })
 }
 
-function updateEmployee() {
-  let updatedEmployee = 1;
+function addDepartment() {
+  inquirer
+    .prompt([
+      {
+      type: 'input',
+      name: 'departments',
+      message: 'Whats ur new departments name??',
+      validate: departmentsInput => {
+        if (departmentsInput) {
+          return true;
+        } else { 
+          console.log('what?');
+          return false;}
+      }
+      }
+    ]). then((answers) => {
+      db.query(`INSERT INTO departments (department) VALUES (?)`, [answers.departments], (err, result) => {
+        if (err) throw err;
+        console.log(`${answers.departments} has been added to your departments table`);
+        startALL();
+      });
+    });
+};
+
+function addRole() {
   inquirer
     .prompt([
       {
         type: 'list',
-        name: 'chosenEmployee',
-        message: 'Which employee do you wanna update??',
-        choices: ['Daniel Perez Garnica', 'Kyle Myrphy', 'Joe Mama', 'Candice Dickens', 'Diz Nutz'],
+        name: 'RoleDetails',
+        choices: ['Role Name', 'Salary', 'Department'],
       },
-    ]). then(answers => {
+    ]) .then(answers => {
       console.log(answers);
+      if (answers.RoleDetails == 'Role Name') {
+        inquirer.prompt([{
+          type: 'input',
+          name: 'RoleName',
+          message: 'Whats the name of the new role?',
+          validate: RoleName => {
+            if (RoleName) {
+              return true;
+            } return false;
+          }
+        }])
+      }
     })
-  db.query(`UPDATE employeeProfile SET employeeProfile WHERE id = ?`, updatedEmployee, (err, results) => {
-    if (err) {
-      console.log(err);
-    }
-    console.table(results)
-  } )
 }
