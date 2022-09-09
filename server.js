@@ -22,7 +22,7 @@ inquirer
       name: 'initialPrompt',
       message: 'What do you wanna do??',
       choices: ['View all employees', 'View all roles', 'View all departments', 
-      'Add Department', 'Add Role', 'Add Employee', 'Update Employee'],
+      'Add Department', 'Add Role', 'Add Employee', 'Update Employee', 'Log Out'],
     },
   ]) .then(answers => {
     console.log(answers);
@@ -43,6 +43,15 @@ inquirer
     if(answers.initialPrompt == 'Add Role') {
       addRole();
     }
+    if (answers.initialPrompt == 'Add Employee') {
+      addEmployee();
+    } if (answers.initialPrompt == 'Update Employee') {
+      updateEmployee();
+    }
+    else if (answers.prompt === 'Log Out') {
+      db.end();
+      console.log("Thanks for ur Hard Work!!");
+  }
   })
 
   // create ur finctions aqui pls
@@ -172,4 +181,72 @@ function addRole() {
         })
       }
     }) 
-}
+  }
+
+  function addEmployee() {
+    db.query(`SELECT * FROM roles, employeeProfile`, (err, result) => {
+      if (err) throw err;
+      inquirer.prompt([
+        {
+          type: 'input',
+          name: 'employeesName',
+          message: 'Whats ur new employees name??',
+          validate: employeesNameInput => {
+            if (employeesNameInput) {
+              return true;
+            } else {
+              console.log('Cmon he must have a name!!');
+              return false;
+            }
+          }
+      },
+      {
+        type: 'input',
+        name: 'employeesLast',
+        message: 'Whats ur employees last name??',
+        validate: employeesLastInput => {
+          if (employeesLastInput) {
+            return true;
+          } else {
+            console.log('No one has no last name!');
+            return false;
+          }
+        }
+      },
+      {
+        type: 'list',
+        name: 'employeesRole',
+        message: 'Whats the role of ur new employee??',
+        choices: () => {
+          var array = [];
+          for (var i = 0; i < result.length; i++) {
+              array.push(result[i].jobTitle);
+          }
+          var newArray = [...new Set(array)];
+          return newArray;
+      }       
+      },
+      {
+        type: 'input',
+        name: 'manager',
+        message: 'Whose ur new employees manager??',
+        validate: managerInput => {
+          if (managerInput) {
+            console.log('Your employee works for ' + managerInput);
+            return true;
+          } else {
+            console.log('he must work for someone');
+            return false;
+          }
+        }
+      }
+    ]) .then ((answers) => {
+      console.log(result + 'this are the result');
+      console.log(answers + 'this are the answers')
+    })
+    })
+  }
+
+  function updateEmployee() {
+    // add function here pwease!!
+  }
