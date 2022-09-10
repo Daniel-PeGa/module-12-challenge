@@ -48,9 +48,9 @@ inquirer
     } if (answers.initialPrompt == 'Update Employee') {
       updateEmployee();
     }
-    else if (answers.prompt === 'Log Out') {
-      db.end();
+    else if (answers.initialPrompt === 'Log Out') {
       console.log("Thanks for ur Hard Work!!");
+            db.end();
   }
   })
 
@@ -248,5 +248,52 @@ function addRole() {
   }
 
   function updateEmployee() {
-    // add function here pwease!!
+    db.query(`SELECT * FROM employeeProfile, roles`, (err, result) => {
+      if (err) throw err;
+      inquirer.prompt([{
+        type: 'list',
+        name: 'updateEmployee',
+        message: 'Which employee do you wanna update??',
+        choices: () => {
+          var array = [];
+          for (var i = 0; i < result.length; i++) {
+              array.push(result[i].lastName);
+          }
+          var employeeArray = [...new Set(array)];
+          return employeeArray;
+      }
+      },
+      {
+        type: 'list',
+        name: 'role',
+        message: 'What role do you want to put him in??',
+        choices: () => {
+          var array = [];
+          for (var i = 0; i < result.length; i++) {
+              array.push(result[i].jobTitle);
+          }
+          var newArray = [...new Set(array)];
+          return newArray;
+      }
+      }
+    ]) .then((answers) => {
+      for (var i = 0; i < result.length; i++) {
+        if (result[i].last_name === answers.employeeProfile) {
+            var name = result[i];
+        }
+    }
+
+    for (var i = 0; i < result.length; i++) {
+        if (result[i].title === answers.roles) {
+            var role = result[i];
+        }
+    }
+
+    db.query(`UPDATE employeeProfile SET ? WHERE ?`, [{roleId: role}, {lastName: name}], (err, result) => {
+        if (err) throw err;
+        console.log(`Updated ${answers.employeeProfile} role to the database.`);
+        startALL();
+    });
+    })
+    })
   }
