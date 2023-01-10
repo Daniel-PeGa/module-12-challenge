@@ -1,4 +1,4 @@
-# module-12-challenge Employee Tracker
+# MySQL Employee Tracker
 
 ## Project Description
 
@@ -6,11 +6,31 @@ This project was designed for building and managing a database to keep track of 
 
 Throughout the process, my main challenge besides being past the due date, was the different ways to make use of inquirer and take the best advantage possible.
 
+## Technologies used
+
+* MySQL
+* Inquirer
+* Node.js
+* Console.table
+
 ## Install and run
 
-To make use of this project you only have to type in your terminal npm i.
+To make use of this application, you do need to clone it in your personal computer, and once it has been opened on your code editor, you open the integrated terminal and type in the following commands:
 
-However, I am not sure if you might want to try just for the sake of security the project will run properly open mySQL w 'mysql -uroot' and run source SQL/schema.sql, as well as SQL/seed.sql
+```
+npm i
+mysql -u root
+```
+MySQL should open now and you type in the following:
+```
+SOURCE SQL/schema.sql;
+SOURCE SQL/seed.sql;
+```
+Once your database information has been seeded you should just type in the following command:
+```
+node server.js
+```
+And some prompts should pop up for you on the terminal, givving you the freedom to view all departments in the database, employees, and their info. You also have the option to update their status, and add departments, employees, etc. You can also simply log out and thats all about it!
 
 ## Video
 
@@ -42,3 +62,8 @@ WHEN I choose to add an employee
 THEN I am prompted to enter the employee’s first name, last name, role, and manager, and that employee is added to the database
 WHEN I choose to update an employee role
 THEN I am prompted to select an employee to update and their new role and this information is updated in the database
+
+## Screenshot
+
+<img width="1470" alt="Screenshot 2023-01-09 at 6 19 00 PM" src="https://user-images.githubusercontent.com/106125888/211434099-3a4e2c8a-6ae6-4cbb-8aa5-057203744785.png">
+
